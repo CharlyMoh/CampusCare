@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusCare UTP | Gestión Inteligente de Infraestructura - Universidad Tecnológica de Puebla</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        utp: {
+                            green: {
+                                50: '#edfbf2',
+                                100: '#d5f7de',
+                                200: '#aef0c1',
+                                500: '#008e3d',
+                                600: '#007833', /* Verde oficial UTP */
+                                700: '#006129',
+                                800: '#004d21',
+                                900: '#003316',
+                            },
+                            terracotta: {
+                                50: '#fcf5f4',
+                                100: '#fae9e6',
+                                200: '#f5d3cd',
+                                500: '#a32b17',
+                                600: '#892413', /* Terracota oficial siglas UTP */
+                                700: '#6f1c0d',
+                                800: '#541308',
+                                900: '#380b04',
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-utp-green-600 selection:text-white">
+
+    <!-- Top Navigation Header -->
+    <header
+        class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-3 group">
+                <div
+                    class="w-11 h-11 rounded-xl bg-gradient-to-tr from-utp-green-700 via-utp-green-600 to-utp-terracotta-600 flex items-center justify-center text-white shadow-md shadow-utp-green-600/20 group-hover:scale-105 transition-transform">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                </div>
+                <div>
+                    <span class="text-xl font-bold tracking-tight text-slate-900 flex items-center gap-1.5">
+                        Campus<span class="text-utp-green-600">Care</span>
+                        <span
+                            class="text-[10px] uppercase font-mono px-2 py-0.5 rounded-full bg-utp-terracotta-50 text-utp-terracotta-700 font-bold border border-utp-terracotta-200">UTP
+                            Puebla</span>
+                    </span>
+                    <p class="text-xs text-slate-500 font-medium hidden sm:block">Universidad Tecnológica de Puebla •
+                        Servicios & Mantenimiento</p>
+                </div>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center gap-7 text-sm font-semibold text-slate-600">
+                <a href="#justificacion" class="hover:text-utp-green-600 transition-colors">Problemática & ODS</a>
+                <a href="#flujo" class="hover:text-utp-green-600 transition-colors">Flujo de Trabajo</a>
+                <a href="#multimedia" class="hover:text-utp-green-600 transition-colors">Video Demostrativo</a>
+                <a href="#galeria" class="hover:text-utp-green-600 transition-colors">Evidencias</a>
+                <a href="#simulador"
+                    class="px-4 py-2 rounded-lg bg-utp-green-600 hover:bg-utp-green-700 text-white font-medium shadow-sm transition-all flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    Simulador QR
+                </a>
+            </nav>
+
+            <!-- Mobile Hamburger Button -->
+            <div class="flex items-center gap-2 md:hidden">
+                <button id="mobileMenuBtn"
+                    class="p-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100"
+                    aria-label="Abrir menú">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Menu -->
+        <div id="mobileMenu"
+            class="hidden md:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-6 space-y-3 shadow-lg">
+            <a href="#justificacion" class="block py-2 text-slate-700 font-medium hover:text-utp-green-600">Problemática
+                & ODS</a>
+            <a href="#flujo" class="block py-2 text-slate-700 font-medium hover:text-utp-green-600">Flujo de Trabajo</a>
+            <a href="#multimedia" class="block py-2 text-slate-700 font-medium hover:text-utp-green-600">Video
+                Demostrativo</a>
+            <a href="#galeria" class="block py-2 text-slate-700 font-medium hover:text-utp-green-600">Galería de
+                Evidencias</a>
+            <a href="#simulador"
+                class="block py-2.5 text-center rounded-lg bg-utp-green-600 text-white font-medium">Probar Simulador
+                QR</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section
+        class="relative overflow-hidden pt-12 pb-20 lg:pt-20 lg:pb-28 bg-gradient-to-b from-utp-green-50/60 via-white to-slate-50 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-12 gap-12 items-center">
+
+                <!-- Left Column: Copy & Actions -->
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div
+                        class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-utp-green-100/80 border border-utp-green-300/60 text-utp-green-900 text-xs font-semibold tracking-wide">
+                        <span class="w-2 h-2 rounded-full bg-utp-terracotta-600 animate-pulse"></span>
+                        Universidad Tecnológica de Puebla • Innovación en Gestión de Activos
+                    </div>
+
+                    <h1
+                        class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-[1.15]">
+                        Infraestructura universitaria <span
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-utp-green-700 via-utp-green-600 to-utp-terracotta-600">trazable,
+                            rápida y sostenible.</span>
+                    </h1>
+
+                    <p class="text-lg text-slate-600 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
+                        CampusCare digitaliza el reporte y remediación de anomalías físicas en las instalaciones de la
+                        UTP. Sustituye bitácoras de papel mediante escaneo QR en aulas, laboratorios y talleres,
+                        validación fotográfica obligatoria de cierre y métricas de atención en tiempo real.
+                    </p>
+
+                    <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
+                        <a href="#simulador"
+                            class="px-6 py-3.5 rounded-xl bg-utp-green-700 hover:bg-utp-green-800 text-white font-semibold text-sm shadow-lg shadow-utp-green-700/20 transition-all flex items-center gap-2">
+                            <svg class="w-5 h-5 text-utp-green-200" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                            </svg>
+                            Simular Levantamiento de Ticket
+                        </a>
+                        <a href="#multimedia"
+                            class="px-6 py-3.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 font-semibold text-sm transition-all flex items-center gap-2">
+                            <svg class="w-5 h-5 text-utp-terracotta-600" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            Ver Video del Proceso
+                        </a>
+                    </div>
+
+                    <!-- Feature badges counter -->
+                    <div class="grid grid-cols-3 gap-4 pt-6 border-t border-slate-200/80 max-w-lg mx-auto lg:mx-0">
+                        <div>
+                            <p class="text-2xl sm:text-3xl font-bold text-slate-900 font-mono">100%</p>
+                            <p class="text-xs text-slate-500 font-medium">Trazabilidad con QR</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl sm:text-3xl font-bold text-utp-green-600 font-mono">&lt; 1.5s</p>
+                            <p class="text-xs text-slate-500 font-medium">Sincronización RNF-04</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl sm:text-3xl font-bold text-utp-terracotta-600 font-mono">-65%</p>
+                            <p class="text-xs text-slate-500 font-medium">Reducción en MTTR</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Visual Mockup Showcase -->
+                <div class="lg:col-span-5 relative">
+                    <div
+                        class="relative mx-auto max-w-sm rounded-3xl bg-slate-900 p-3 shadow-2xl ring-1 ring-slate-800/10">
+                        <!-- Simulated phone bezel -->
+                        <div class="rounded-[22px] bg-slate-950 p-4 text-white overflow-hidden border border-slate-800">
+                            <!-- Phone Status Header -->
+                            <div
+                                class="flex justify-between items-center text-xs text-slate-400 mb-4 pb-2 border-b border-slate-800 font-mono">
+                                <span>09:41 AM</span>
+                                <span
+                                    class="text-[10px] bg-utp-green-600/20 text-utp-green-400 px-2 py-0.5 rounded font-sans">En
+                                    línea • Wi-Fi UTP</span>
+                                <span>100%</span>
+                            </div>
+
+                            <!-- App Simulated View -->
+                            <div class="space-y-4">
+                                <div
+                                    class="bg-gradient-to-r from-utp-green-700 via-utp-green-600 to-utp-terracotta-700 p-4 rounded-xl text-white">
+                                    <div class="text-[11px] font-semibold uppercase tracking-wider text-utp-green-100">
+                                        Escaneo QR Exitoso</div>
+                                    <h3 class="text-lg font-bold">Laboratorio de Cómputo LC-2</h3>
+                                    <p class="text-xs text-utp-green-100 font-mono">Edificio K • UTP Puebla • Aula 104
+                                    </p>
+                                </div>
+
+                                <div class="bg-slate-900 border border-slate-800 rounded-xl p-3.5 space-y-2.5">
+                                    <div class="flex justify-between items-center text-xs">
+                                        <span class="text-slate-400">Folio asignado:</span>
+                                        <span class="font-mono text-utp-green-400 font-semibold">TCK-2026-0129</span>
+                                    </div>
+                                    <div class="flex justify-between items-center text-xs">
+                                        <span class="text-slate-400">Categoría:</span>
+                                        <span
+                                            class="bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded text-[11px] font-medium">Eléctrica
+                                            / Contactos</span>
+                                    </div>
+                                    <div class="flex justify-between items-center text-xs">
+                                        <span class="text-slate-400">Severidad reportada:</span>
+                                        <span
+                                            class="bg-utp-terracotta-500/30 text-rose-300 px-2 py-0.5 rounded text-[11px] font-medium">ALTA
+                                            (Sin suministro)</span>
+                                    </div>
+                                </div>
+
+                                <div class="rounded-xl overflow-hidden border border-slate-800 relative group">
+                                    <img src="images/tableroDescompuesto.jpg"
+                                        alt="Evidencia fotográfica de tablero eléctrico dañado en laboratorio"
+                                        class="w-full h-36 object-cover">
+                                    <div
+                                        class="absolute bottom-0 inset-x-0 bg-slate-900/80 backdrop-blur-sm p-2 text-[11px] text-slate-300 flex items-center justify-between">
+                                        <span>Foto capturada con CameraX</span>
+                                        <span class="text-utp-green-400 font-semibold">Verificado UTP</span>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center justify-between bg-slate-800/60 p-2.5 rounded-xl text-xs">
+                                    <span class="text-slate-300">Estado del ticket:</span>
+                                    <span class="flex items-center gap-1.5 font-bold text-utp-green-400">
+                                        <span class="w-2 h-2 rounded-full bg-utp-green-400 animate-ping"></span>
+                                        ASIGNADO A TÉCNICO
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Decorative background glow with institutional green -->
+                    <div
+                        class="absolute -top-10 -right-10 w-72 h-72 bg-utp-green-600/20 rounded-full blur-3xl -z-10 pointer-events-none">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 1: Problemática y Alineación ODS -->
+    <section id="justificacion" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-xs uppercase tracking-widest font-bold text-utp-green-600 mb-2">Fundamentación Formal
+                    UTP</h2>
+                <p class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">Problemática y Alineación
+                    con la Agenda 2030</p>
+                <p class="mt-4 text-slate-600">CampusCare no es un simple gestor de tareas; es un modelo sustentable
+                    para erradicar vicios operativos en campus educativos y cumplir metas globales de sostenibilidad.
+                </p>
+            </div>
+
+            <!-- Problem cards vs Solution -->
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <div class="bg-utp-terracotta-50/60 border border-utp-terracotta-200/70 rounded-2xl p-6 relative">
+                    <div
+                        class="w-10 h-10 rounded-xl bg-utp-terracotta-600 text-white flex items-center justify-center font-bold mb-4">
+                        ✕
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">Canales Informales y Dispersos</h3>
+                    <p class="text-sm text-slate-600 leading-relaxed">
+                        Reportes en pasillos, correos que se ignoran o libretas de mantenimiento que se extravían sin
+                        folio ni responsable formal asignado.
+                    </p>
+                </div>
+
+                <div class="bg-amber-50/60 border border-amber-100 rounded-2xl p-6 relative">
+                    <div
+                        class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center font-bold mb-4">
+                        !
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">Cero Trazabilidad y Métricas</h3>
+                    <p class="text-sm text-slate-600 leading-relaxed">
+                        Servicios generales desconoce el tiempo medio de resolución (MTTR), los edificios con mayor tasa
+                        de falla y las piezas de mayor recambio.
+                    </p>
+                </div>
+
+                <div class="bg-slate-100/70 border border-slate-200 rounded-2xl p-6 relative">
+                    <div
+                        class="w-10 h-10 rounded-xl bg-slate-600 text-white flex items-center justify-center font-bold mb-4">
+                        ?
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">Apatía de la Comunidad</h3>
+                    <p class="text-sm text-slate-600 leading-relaxed">
+                        El alumno o maestro no recibe confirmación cuando reporta una falla. La sensación de falta de
+                        respuesta desalienta el cuidado colectivo.
+                    </p>
+                </div>
+            </div>
+
+            <!-- SDG / ODS Grid -->
+            <div
+                class="bg-gradient-to-br from-slate-900 via-slate-900 to-utp-green-950 rounded-3xl p-8 lg:p-12 text-white shadow-xl">
+                <div
+                    class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-10 pb-8 border-b border-slate-700/80">
+                    <div>
+                        <span
+                            class="text-utp-green-400 font-mono text-xs uppercase tracking-wider font-semibold">Impacto
+                            Social & Ambiental</span>
+                        <h3 class="text-2xl sm:text-3xl font-bold mt-1">Alineación con Objetivos de Desarrollo
+                            Sostenible</h3>
+                    </div>
+                    <p class="text-slate-300 text-sm max-w-md">
+                        Integrado como criterio evaluable para acreditaciones de calidad y certificaciones de campus
+                        sustentables en la UTP.
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-6">
+                    <!-- ODS 9 -->
+                    <div
+                        class="bg-slate-800/90 border border-slate-700 p-6 rounded-2xl flex flex-col justify-between hover:border-utp-green-500/50 transition-colors">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-3xl font-extrabold text-amber-500 font-mono">ODS 9</span>
+                                <span class="text-xs bg-amber-500/20 text-amber-300 px-2 py-1 rounded">Meta 9.4</span>
+                            </div>
+                            <h4 class="text-lg font-bold mb-2">Industria, Innovación e Infraestructura</h4>
+                            <p class="text-sm text-slate-300 leading-relaxed">
+                                Moderniza la gestión operativa mediante tecnologías móviles nativas, código QR y
+                                arquitecturas de software reactivas.
+                            </p>
+                        </div>
+                        <div class="mt-6 text-xs text-utp-green-400 font-semibold flex items-center gap-1">
+                            Espacios seguros y operativos &rarr;
+                        </div>
+                    </div>
+
+                    <!-- ODS 11 -->
+                    <div
+                        class="bg-slate-800/90 border border-slate-700 p-6 rounded-2xl flex flex-col justify-between hover:border-utp-terracotta-500/50 transition-colors">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-3xl font-extrabold text-utp-terracotta-400 font-mono">ODS 11</span>
+                                <span
+                                    class="text-xs bg-utp-terracotta-500/20 text-utp-terracotta-300 px-2 py-1 rounded">Meta
+                                    11.6</span>
+                            </div>
+                            <h4 class="text-lg font-bold mb-2">Comunidades y Campus Sostenibles</h4>
+                            <p class="text-sm text-slate-300 leading-relaxed">
+                                Detección oportuna de fugas hidrosanitarias y consumos anómalos de energía eléctrica,
+                                reduciendo la huella de carbono escolar.
+                            </p>
+                        </div>
+                        <div class="mt-6 text-xs text-utp-terracotta-300 font-semibold flex items-center gap-1">
+                            Mitigación de desperdicio de agua &rarr;
+                        </div>
+                    </div>
+
+                    <!-- ODS 12 -->
+                    <div
+                        class="bg-slate-800/90 border border-slate-700 p-6 rounded-2xl flex flex-col justify-between hover:border-utp-green-500/50 transition-colors">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-3xl font-extrabold text-utp-green-400 font-mono">ODS 12</span>
+                                <span class="text-xs bg-utp-green-500/20 text-utp-green-300 px-2 py-1 rounded">Meta
+                                    12.5</span>
+                            </div>
+                            <h4 class="text-lg font-bold mb-2">Producción y Consumo Responsable</h4>
+                            <p class="text-sm text-slate-300 leading-relaxed">
+                                Maximiza el ciclo de vida de proyectores, butacas e infraestructura eléctrica mediante
+                                mantenimientos correctivos en menos de 24 horas.
+                            </p>
+                        </div>
+                        <div class="mt-6 text-xs text-utp-green-400 font-semibold flex items-center gap-1">
+                            Menor generación de chatarra tecnológica &rarr;
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Section 2: Proceso Operativo Paso a Paso (5 Etapas) -->
+    <section id="flujo" class="py-20 bg-slate-50 border-y border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-xs uppercase tracking-widest font-bold text-utp-green-600 mb-2">Ciclo de Vida del Ticket
+                </h2>
+                <p class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">El Proceso Operativo de
+                    CampusCare UTP</p>
+                <p class="mt-4 text-slate-600">Cada incidencia atraviesa un flujo determinista con roles claros y
+                    validaciones técnicas en cada transición.</p>
+            </div>
+
+            <div class="relative">
+                <!-- Connecting line for desktop with UTP green to terracotta gradient -->
+                <div
+                    class="hidden lg:block absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-utp-green-600 via-utp-green-500 to-utp-terracotta-600 -translate-y-6 z-0">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 relative z-10">
+
+                    <!-- Step 1 -->
+                    <div
+                        class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+                        <div>
+                            <div
+                                class="w-12 h-12 rounded-xl bg-utp-green-600 text-white flex items-center justify-center font-bold text-lg mb-4 shadow-md shadow-utp-green-600/30">
+                                01
+                            </div>
+                            <div class="text-[11px] font-bold uppercase tracking-wider text-utp-green-600">Paso 1 • En
+                                Sitio</div>
+                            <h3 class="text-base font-bold text-slate-900 mt-1 mb-2">Escaneo QR / NFC</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                El docente o alumno escanea la etiqueta en la puerta del aula. La app precarga edificio,
+                                piso y número de aula sin error tipográfico.
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-500 font-mono">
+                            RF-02 • ML Kit Barcode
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div
+                        class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+                        <div>
+                            <div
+                                class="w-12 h-12 rounded-xl bg-utp-green-700 text-white flex items-center justify-center font-bold text-lg mb-4 shadow-md shadow-utp-green-700/30">
+                                02
+                            </div>
+                            <div class="text-[11px] font-bold uppercase tracking-wider text-utp-green-700">Paso 2 •
+                                Levantamiento</div>
+                            <h3 class="text-base font-bold text-slate-900 mt-1 mb-2">Foto y Severidad</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Captura fotográfica de la avería, selección de categoría (ej. Red/TI) y descripción
+                                obligatoria. Genera folio único cifrado en SQLite/Room.
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-500 font-mono">
+                            RF-03 • CameraX + Room
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div
+                        class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+                        <div>
+                            <div
+                                class="w-12 h-12 rounded-xl bg-utp-green-800 text-white flex items-center justify-center font-bold text-lg mb-4 shadow-md shadow-utp-green-800/30">
+                                03
+                            </div>
+                            <div class="text-[11px] font-bold uppercase tracking-wider text-utp-green-800">Paso 3 •
+                                Asignación</div>
+                            <h3 class="text-base font-bold text-slate-900 mt-1 mb-2">Triaje y Despacho</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                El coordinador de servicios generales evalúa la prioridad y asigna al técnico idóneo. Se
+                                dispara notificación push automática.
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-500 font-mono">
+                            RF-04 & RF-06 • Push FCM
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div
+                        class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+                        <div>
+                            <div
+                                class="w-12 h-12 rounded-xl bg-utp-terracotta-600 text-white flex items-center justify-center font-bold text-lg mb-4 shadow-md shadow-utp-terracotta-600/30">
+                                04
+                            </div>
+                            <div class="text-[11px] font-bold uppercase tracking-wider text-utp-terracotta-700">Paso 4 •
+                                En Campo</div>
+                            <h3 class="text-base font-bold text-slate-900 mt-1 mb-2">Cierre con Evidencia</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Regla inquebrantable: El técnico debe subir obligatoriamente la foto del trabajo
+                                concluido para pasar el estado a <span
+                                    class="font-semibold text-utp-green-700">RESUELTO</span>.
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-500 font-mono">
+                            RF-05 • Auditoría Visual
+                        </div>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div
+                        class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+                        <div>
+                            <div
+                                class="w-12 h-12 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold text-lg mb-4 shadow-md shadow-slate-900/30">
+                                05
+                            </div>
+                            <div class="text-[11px] font-bold uppercase tracking-wider text-slate-700">Paso 5 •
+                                Evaluación</div>
+                            <h3 class="text-base font-bold text-slate-900 mt-1 mb-2">Confirmación y SLA</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                El usuario califica la solución recibida. El sistema calcula los tiempos reales y
+                                actualiza el indicador de cumplimiento de SLA institucional.
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-500 font-mono">
+                            RF-07 • Métricas BI
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Section 3: Video Demostrativo y Recursos Multimedia -->
+    <section id="multimedia" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="text-center max-w-3xl mx-auto mb-14">
+                <span
+                    class="px-3 py-1 bg-utp-green-100 text-utp-green-800 rounded-full text-xs font-bold uppercase tracking-wider">Demostración
+                    Audiovisual</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mt-2">CampusCare en Acción
+                    Operativa</h2>
+                <p class="mt-3 text-slate-600">Video explicativo de la interacción física-digital: desde la detección de
+                    la avería en instalaciones de la UTP hasta la resolución y captura de evidencia.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-12 gap-8 items-center">
+                <!-- Interactive Video Player container -->
+                <div class="lg:col-span-8">
+                    <div
+                        class="relative bg-slate-950 rounded-3xl overflow-hidden shadow-2xl border border-slate-800 group">
+
+                        <!-- Standard HTML5 Video element with fallback canvas simulation and accessible controls -->
+                        <video id="campusVideo" class="w-full h-auto max-h-[460px] object-cover"
+                            poster="images/butacas.jpg"
+                            controls preload="metadata">
+                            <!-- Free creative commons campus / technology sample clip -->
+                            <source
+                                src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
+                                type="video/mp4">
+                            Tu navegador no soporta reproducción de video HTML5.
+                        </video>
+
+                        <!-- Custom Overlay Controls / Banner for Committee -->
+                        <div
+                            class="p-4 bg-slate-900 border-t border-slate-800 flex flex-wrap items-center justify-between gap-4">
+                            <div class="flex items-center gap-3">
+                                <button id="customPlayToggle"
+                                    class="px-3.5 py-1.5 rounded-lg bg-utp-green-600 hover:bg-utp-green-500 text-white text-xs font-semibold flex items-center gap-1.5 transition">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                                    </svg>
+                                    Reproducir / Pausa
+                                </button>
+                                <span class="text-xs text-slate-400 font-mono">Recorrido en Aulas UTP</span>
+                            </div>
+
+                            <div class="flex items-center gap-2">
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-utp-green-950 text-utp-green-400 border border-utp-green-800">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-utp-green-400 mr-1.5"></span>
+                                    Resolución 1080p
+                                </span>
+                                <span class="text-xs text-slate-500 font-mono">Enfoque Técnico UTP</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video context & evaluation notes -->
+                <div class="lg:col-span-4 space-y-4">
+                    <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200">
+                        <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2 mb-2">
+                            <svg class="w-4 h-4 text-utp-green-600" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            Puntos Clave de la Demostración
+                        </h3>
+                        <ul class="text-xs text-slate-600 space-y-2">
+                            <li class="flex items-start gap-1.5">
+                                <span class="text-utp-green-600 font-bold">•</span>
+                                <span><strong>Lectura instantánea de QR:</strong> Identificación precisa de edificios y
+                                    laboratorios de la UTP.</span>
+                            </li>
+                            <li class="flex items-start gap-1.5">
+                                <span class="text-utp-green-600 font-bold">•</span>
+                                <span><strong>Modo Offline:</strong> Sincronización transparente con base de datos Room
+                                    ante pérdida de señal en pasillos.</span>
+                            </li>
+                            <li class="flex items-start gap-1.5">
+                                <span class="text-utp-green-600 font-bold">•</span>
+                                <span><strong>Garantía de Cierre:</strong> El sistema bloquea el cambio de estado si el
+                                    técnico no fotografía la reparación.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-utp-green-50/70 border border-utp-green-200/80">
+                        <h4 class="text-xs font-bold text-utp-green-900 uppercase tracking-wide">Ficha de Hardware Móvil
+                        </h4>
+                        <div class="mt-2 grid grid-cols-2 gap-2 text-xs text-slate-700">
+                            <div class="bg-white p-2 rounded-lg border border-utp-green-200">
+                                <span class="block text-slate-400 text-[10px]">Librería Óptica</span>
+                                <span class="font-bold text-slate-800">Google ML Kit</span>
+                            </div>
+                            <div class="bg-white p-2 rounded-lg border border-utp-green-200">
+                                <span class="block text-slate-400 text-[10px]">Cámara</span>
+                                <span class="font-bold text-slate-800">Android CameraX</span>
+                            </div>
+                            <div class="bg-white p-2 rounded-lg border border-utp-green-200">
+                                <span class="block text-slate-400 text-[10px]">Caché Local</span>
+                                <span class="font-bold text-slate-800">Room SQLite</span>
+                            </div>
+                            <div class="bg-white p-2 rounded-lg border border-utp-green-200">
+                                <span class="block text-slate-400 text-[10px]">Push Engine</span>
+                                <span class="font-bold text-slate-800">Firebase FCM</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Section 4: Galería de Evidencias (Antes / Después con Slider Interactivo) -->
+    <section id="galeria" class="py-20 bg-slate-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="text-center max-w-3xl mx-auto mb-14">
+                <span
+                    class="px-3 py-1 bg-utp-green-500/20 text-utp-green-400 rounded-full text-xs font-mono font-bold uppercase tracking-wider">
+                    Requerimiento RF-05
+                </span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight mt-3">Galería Interactiva de Evidencias
+                </h2>
+                <p class="mt-3 text-slate-300 text-sm">
+                    Muestra interactiva de auditoría: desliza para contrastar el estado inicial reportado contra el
+                    trabajo finalizado por el personal de mantenimiento de la UTP.
+                </p>
+            </div>
+
+            <!-- Evidence Item: Before & After interactive slider -->
+            <div class="max-w-4xl mx-auto bg-slate-800 rounded-3xl p-6 sm:p-8 border border-slate-700 shadow-2xl mb-12">
+                <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+                    <div>
+                        <span class="text-xs font-mono text-utp-green-400 font-semibold">TICKET ID:
+                            #TCK-2026-0042</span>
+                        <h3 class="text-xl font-bold">Reparación Integral de Tablero Eléctrico & Canaletas</h3>
+                        <p class="text-xs text-slate-400">Edificio E (Ingenierías UTP) • Laboratorio de Máquinas
+                            Eléctricas • Solucionado en 4.2 hrs</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span
+                            class="px-3 py-1 rounded-full text-xs font-bold bg-utp-green-500/20 text-utp-green-400 border border-utp-green-500/30">
+                            AUDITADO Y APROBADO
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Slider Comparison Frame -->
+                <div id="compareWrapper"
+                    class="img-compare-container rounded-2xl h-80 sm:h-96 w-full select-none cursor-ew-resize bg-slate-950">
+                    <!-- Background: After (Resuelto) -->
+                    <img src="images/tablero.jpg"
+                        alt="Tablero eléctrico reparado" class="absolute inset-0 w-full h-full object-cover">
+                    <div
+                        class="absolute bottom-4 right-4 bg-utp-green-600/90 backdrop-blur-md px-3 py-1 rounded-lg text-xs font-bold text-white shadow-lg">
+                        DESPUÉS (Trabajo Concluido)
+                    </div>
+
+                    <!-- Foreground: Before (Reporte Inicial) -->
+                    <div id="compareOverlay" class="img-compare-overlay">
+                        <img src="images/tableroDescompuesto.jpg"
+                            alt="Tablero eléctrico reportado" class="absolute inset-0 w-[896px] max-w-none h-full object-cover">
+                        <div
+                            class="absolute bottom-4 left-4 bg-utp-terracotta-600/90 backdrop-blur-md px-3 py-1 rounded-lg text-xs font-bold text-white shadow-lg">
+                            ANTES (Reporte Inicial de Alumno)
+                        </div>
+                    </div>
+
+                    <!-- Slider bar divider -->
+                    <div id="sliderHandle"
+                        class="absolute top-0 bottom-0 left-1/2 -ml-4 w-8 flex items-center justify-center pointer-events-none">
+                        <div
+                            class="w-8 h-8 rounded-full bg-white text-slate-900 shadow-xl flex items-center justify-center text-xs font-extrabold border-2 border-utp-green-500">
+                            ⟷
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between text-xs text-slate-400 mt-4 px-2">
+                    <span>Arrastra o desliza sobre la imagen para comparar el antes y después</span>
+                    <span class="font-mono text-utp-green-400">Control de Calidad CampusCare UTP</span>
+                </div>
+            </div>
+
+            <!-- Additional Visual Gallery Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                <div
+                    class="bg-slate-800 rounded-2xl overflow-hidden border border-slate-700 group hover:border-utp-green-500 transition-all">
+                    <div class="h-44 overflow-hidden relative">
+                        <img src="images/SwitchPoe.jpg"
+                            alt="Switch PoE en laboratorio de cómputo"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        <span
+                            class="absolute top-3 left-3 bg-utp-green-700 text-[10px] font-bold px-2 py-0.5 rounded text-white font-mono">Edificio
+                            A</span>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-bold text-sm text-white">Sustitución de Switch PoE</h4>
+                        <p class="text-xs text-slate-400 mt-1">Reportado: Red inestable en Centro de Cómputo 1.</p>
+                        <div class="mt-3 flex justify-between items-center text-[11px] text-utp-green-400">
+                            <span>Resuelto en 2h 15m</span>
+                            <span class="font-bold">100% OK</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-slate-800 rounded-2xl overflow-hidden border border-slate-700 group hover:border-utp-green-500 transition-all">
+                    <div class="h-44 overflow-hidden relative">
+                        <img src="images/fluxometro.jpg"
+                            alt="Fluxómetro de sanitarios"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        <span
+                            class="absolute top-3 left-3 bg-utp-terracotta-700 text-[10px] font-bold px-2 py-0.5 rounded text-white font-mono">Edificio
+                            F</span>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-bold text-sm text-white">Fuga de Agua en Fluxómetro</h4>
+                        <p class="text-xs text-slate-400 mt-1">Prevención de desperdicio hídrico (ODS 11).</p>
+                        <div class="mt-3 flex justify-between items-center text-[11px] text-utp-terracotta-400">
+                            <span>Resuelto en 45m</span>
+                            <span class="font-bold">Prioridad URGENTE</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-slate-800 rounded-2xl overflow-hidden border border-slate-700 group hover:border-utp-green-500 transition-all">
+                    <div class="h-44 overflow-hidden relative">
+                        <img src="images/butacas.jpg"
+                            alt="Butacas del aula"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        <span
+                            class="absolute top-3 left-3 bg-amber-600 text-[10px] font-bold px-2 py-0.5 rounded text-white font-mono">Edificio
+                            D</span>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-bold text-sm text-white">Reemplazo de Butacas Rotas</h4>
+                        <p class="text-xs text-slate-400 mt-1">Acondicionamiento para 120 alumnos en Aula Magna.</p>
+                        <div class="mt-3 flex justify-between items-center text-[11px] text-utp-green-400">
+                            <span>Mobiliario reciclado (ODS 12)</span>
+                            <span class="font-bold">OK</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-slate-800 rounded-2xl overflow-hidden border border-slate-700 group hover:border-utp-green-500 transition-all">
+                    <div class="h-44 overflow-hidden relative">
+                        <img src="images/proyector.jpg"
+                            alt="Proyector láser audiovisual"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        <span
+                            class="absolute top-3 left-3 bg-utp-green-800 text-[10px] font-bold px-2 py-0.5 rounded text-white font-mono">Edificio
+                            K</span>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-bold text-sm text-white">Calibración de Proyector Láser</h4>
+                        <p class="text-xs text-slate-400 mt-1">Alineación óptica y sustitución de cable HDMI.</p>
+                        <div class="mt-3 flex justify-between items-center text-[11px] text-utp-green-400">
+                            <span>SLA cumplido 100%</span>
+                            <span class="font-bold">Cerrado</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Section 5: Simulador Operativo Interactivo -->
+    <section id="simulador" class="py-20 bg-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="text-center max-w-3xl mx-auto mb-14">
+                <span
+                    class="px-3 py-1 bg-utp-green-100 text-utp-green-800 rounded-full text-xs font-mono font-bold uppercase tracking-wider">
+                    Demo de Laboratorio UTP
+                </span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mt-3">
+                    Simulador de Creación y Ciclo de Ticket
+                </h2>
+                <p class="mt-3 text-slate-600 text-sm">
+                    Prueba el flujo como si fueras un evaluador: simula el escaneo del código QR de un aula de la UTP,
+                    levanta una incidencia y transiciona la máquina de estados hasta su cierre con evidencia
+                    fotográfica.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-12 gap-8 items-start">
+
+                <!-- Simulator Control Panel (Left) -->
+                <div class="lg:col-span-6 bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                    <div class="border-b border-slate-100 pb-4">
+                        <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-utp-green-600"></span>
+                            Paso A: Simular Escaneo de Código QR
+                        </h3>
+                        <p class="text-xs text-slate-500 mt-1">Selecciona el código QR de prueba situado en el campus
+                            UTP:</p>
+                    </div>
+
+                    <!-- QR Quick Selectors -->
+                    <div class="grid grid-cols-3 gap-3">
+                        <button
+                            onclick="selectCampusLocation('EDIF-K-104', 'Edificio K - Aula 104 (Laboratorio)', 'Lab Redes')"
+                            class="qr-btn p-3 rounded-xl border border-slate-200 hover:border-utp-green-500 text-left transition-all bg-slate-50 focus:ring-2 focus:ring-utp-green-500">
+                            <span class="block text-[10px] font-mono text-utp-green-700 font-bold">QR: K-104</span>
+                            <span class="text-xs font-bold text-slate-800">Lab Redes 2</span>
+                            <span class="block text-[10px] text-slate-500">Piso 1 • Edif K</span>
+                        </button>
+                        <button
+                            onclick="selectCampusLocation('EDIF-B-302', 'Edificio B - Aula 302 (Multimedia)', 'Aula 302')"
+                            class="qr-btn p-3 rounded-xl border border-slate-200 hover:border-utp-green-500 text-left transition-all bg-slate-50 focus:ring-2 focus:ring-utp-green-500">
+                            <span class="block text-[10px] font-mono text-utp-green-700 font-bold">QR: B-302</span>
+                            <span class="text-xs font-bold text-slate-800">Aula 302</span>
+                            <span class="block text-[10px] text-slate-500">Piso 3 • Edif B</span>
+                        </button>
+                        <button
+                            onclick="selectCampusLocation('EDIF-H-BIB', 'Edificio H - Centro de Información UTP', 'Biblioteca')"
+                            class="qr-btn p-3 rounded-xl border border-slate-200 hover:border-utp-green-500 text-left transition-all bg-slate-50 focus:ring-2 focus:ring-utp-green-500">
+                            <span class="block text-[10px] font-mono text-utp-green-700 font-bold">QR: H-BIB</span>
+                            <span class="text-xs font-bold text-slate-800">Biblioteca</span>
+                            <span class="block text-[10px] text-slate-500">Planta Baja</span>
+                        </button>
+                    </div>
+
+                    <!-- Ticket Form Fields -->
+                    <div class="space-y-4 pt-2">
+                        <div>
+                            <label
+                                class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Ubicación
+                                Precargada por QR (Read-only)</label>
+                            <input id="simLocationInput" type="text" readonly
+                                value="Edificio K - Aula 104 (Laboratorio)"
+                                class="w-full text-xs font-mono bg-slate-100 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-700 cursor-not-allowed">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label
+                                    class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Categoría</label>
+                                <select id="simCategory"
+                                    class="w-full text-xs bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-800 focus:ring-2 focus:ring-utp-green-500">
+                                    <option value="Eléctrica">Eléctrica (Contactos / Iluminación)</option>
+                                    <option value="Red / TI">Red / Conectividad / Proyector</option>
+                                    <option value="Mobiliario">Mobiliario / Butacas</option>
+                                    <option value="Plomería">Plomería / Sanitarios</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label
+                                    class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Severidad</label>
+                                <select id="simSeverity"
+                                    class="w-full text-xs bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-800 focus:ring-2 focus:ring-utp-green-500">
+                                    <option value="URGENTE">Urgente (SLA &lt; 4 hrs)</option>
+                                    <option value="ALTA" selected>Alta (SLA &lt; 12 hrs)</option>
+                                    <option value="MEDIA">Media (SLA &lt; 24 hrs)</option>
+                                    <option value="BAJA">Baja (SLA &lt; 48 hrs)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label
+                                class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Descripción
+                                de la Avería</label>
+                            <textarea id="simDescription" rows="2"
+                                class="w-full text-xs bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-800 focus:ring-2 focus:ring-utp-green-500"
+                                placeholder="Ej. El tomacorriente de la fila 2 hace falso contacto al conectar la laptop..."></textarea>
+                        </div>
+
+                        <button id="btnEmitirTicket" onclick="handleEmitTicket()"
+                            class="w-full py-3 bg-utp-green-600 hover:bg-utp-green-700 text-white rounded-xl font-bold text-xs uppercase tracking-wider shadow-md transition flex items-center justify-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                            Generar Ticket Oficial con Folio UTP
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Live Simulated Device / State Machine Card (Right) -->
+                <div
+                    class="lg:col-span-6 bg-slate-900 text-white p-6 sm:p-8 rounded-3xl border border-slate-800 shadow-xl space-y-6">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                        <div>
+                            <div class="text-[10px] font-mono uppercase text-utp-green-400 tracking-wider">Monitor de
+                                Máquina de Estados (RF-04)</div>
+                            <h3 class="text-lg font-bold text-white">Inspección de Ticket en Tiempo Real</h3>
+                        </div>
+                        <div id="simFolioBadge"
+                            class="font-mono text-xs px-2.5 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700">
+                            SIN TICKET ACTIVO
+                        </div>
+                    </div>
+
+                    <!-- Interactive State Progress Bar -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-[11px] font-semibold text-slate-400">
+                            <span id="stepLabel1" class="text-utp-green-400">1. ABIERTO</span>
+                            <span id="stepLabel2">2. ASIGNADO</span>
+                            <span id="stepLabel3">3. EN PROCESO</span>
+                            <span id="stepLabel4">4. RESUELTO</span>
+                        </div>
+                        <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                            <div id="simProgressBar"
+                                class="bg-gradient-to-r from-utp-green-600 via-utp-green-500 to-utp-terracotta-600 h-full w-1/4 transition-all duration-500">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Ticket Detail Card -->
+                    <div id="ticketPreviewBox"
+                        class="bg-slate-950 rounded-2xl p-5 border border-slate-800 space-y-3 font-mono text-xs">
+                        <div class="flex justify-between">
+                            <span class="text-slate-500">Folio Institucional:</span>
+                            <span id="dispFolio" class="text-utp-green-400 font-bold">TCK-2026-0001</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-500">Espacio Físico:</span>
+                            <span id="dispLocation" class="text-slate-200">Edificio K - Aula 104</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-500">Especialidad:</span>
+                            <span id="dispCategory" class="text-amber-400">Eléctrica</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-500">Técnico Asignado:</span>
+                            <span id="dispTech" class="text-slate-300">Ing. M. Rodríguez (Soporte UTP)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-500">Estado Actual:</span>
+                            <span id="dispState"
+                                class="px-2 py-0.5 rounded bg-utp-green-950 text-utp-green-300 font-bold border border-utp-green-800">
+                                ABIERTO
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Step Progression Controls -->
+                    <div class="space-y-3 pt-2">
+                        <div class="text-xs text-slate-400 font-sans">
+                            Acciones de Personal de Mantenimiento & Sistema:
+                        </div>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button id="btnStateAsignar" onclick="advanceTicketState('ASIGNADO')"
+                                class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 border border-slate-700 transition">
+                                Asignar
+                            </button>
+                            <button id="btnStateProceso" onclick="advanceTicketState('EN_PROCESO')"
+                                class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 border border-slate-700 transition">
+                                En Proceso
+                            </button>
+                            <button id="btnStateResolver" onclick="advanceTicketState('RESUELTO')"
+                                class="p-2.5 rounded-xl bg-utp-green-700 hover:bg-utp-green-600 text-xs font-bold text-white shadow-md transition flex items-center justify-center gap-1">
+                                Resolver con Foto
+                            </button>
+                        </div>
+                        <p id="simulatorFeedback" class="text-[11px] text-utp-green-300/80 font-mono text-center">
+                            ✓ Ticket inicializado en estado ABIERTO.
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-12 text-slate-500 text-xs">
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-2">
+                <div
+                    class="w-6 h-6 rounded-lg bg-utp-green-700 flex items-center justify-center text-white font-bold text-xs">
+                    U
+                </div>
+                <span class="font-bold text-slate-900">CampusCare UTP</span>
+                <span>• Universidad Tecnológica de Puebla</span>
+            </div>
+            <p class="text-center sm:text-right">
+                Desarrollo Web Progresivo.
+            </p>
+            <p class="text-center sm:text-right">
+                Carlos Manuel Ojeda Hernandez.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Notification Toast Box -->
+    <div id="toastNotification"
+        class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl border border-slate-700 flex items-center gap-3 text-xs max-w-md pointer-events-none">
+        <div id="toastIcon"
+            class="w-7 h-7 rounded-lg bg-utp-green-600 text-white flex items-center justify-center font-bold">
+            ✓
+        </div>
+        <div>
+            <div id="toastTitle" class="font-bold text-slate-100">Notificación</div>
+            <div id="toastBody" class="text-slate-400">Mensaje del sistema</div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
