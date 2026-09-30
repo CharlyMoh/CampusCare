@@ -182,3 +182,12 @@ function showToast(title, message, type = 'info') {
         toast.classList.remove('translate-y-0', 'opacity-100');
     }, 3500);
 }
+
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker
+            .register('./serviceWorker.js', { scope: './' })
+            .then((reg) => console.log('Service Worker activo con alcance:', reg.scope))
+            .catch((err) => console.error('Error al registrar Service Worker:', err));
+    });
+}
