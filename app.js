@@ -1,14 +1,22 @@
+// ==========================================
+// CONFIGURACIÓN API REST (Render / Neon)
+// ==========================================
+// Sustituye con tu URL pública de Render (ej. https://campuscare-api.onrender.com/api)
+const API_BASE_URL = "https://campuscare-api-hnju.onrender.com/api";
+
 // 1. Mobile Menu Toggle
 const mobileMenuBtn = document.getElementById('mobileMenuBtn');
 const mobileMenu = document.getElementById('mobileMenu');
-mobileMenuBtn.addEventListener('click', () => {
-    mobileMenu.classList.toggle('hidden');
-});
+if (mobileMenuBtn && mobileMenu) {
+    mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
 
-// Close mobile menu on link click
-mobileMenu.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
-});
+    // Close mobile menu on link click
+    mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+    });
+}
 
 // 2. Video Player Integration
 const campusVideo = document.getElementById('campusVideo');
@@ -84,25 +92,71 @@ function selectCampusLocation(code, fullName, shortLabel) {
     showToast('QR Escaneado con Éxito', `Ubicación precargada: [${code}] ${shortLabel}`, 'success');
 }
 
-function handleEmitTicket() {
+// Emisión de Ticket: conectada a PostgreSQL / Render (con fallback offline)
+async function handleEmitTicket() {
+    const token = localStorage.getItem('cc_token');
+    if (!token) {
+        showToast('Acceso Requerido', 'Inicia sesión antes de generar un ticket oficial.', 'error');
+        openAuthModal();
+        return;
+    }
+
     const location = document.getElementById('simLocationInput').value;
     const category = document.getElementById('simCategory').value;
     const severity = document.getElementById('simSeverity').value;
     const desc = document.getElementById('simDescription').value.trim();
 
-    // Random ticket counter
-    const randomId = Math.floor(1000 + Math.random() * 9000);
-    currentTicketFolio = `TCK-2026-${randomId}`;
+    if (!desc) {
+        showToast('Descripción Requerida', 'Ingresa la descripción de la avería observada.', 'error');
+        document.getElementById('simDescription').focus();
+        return;
+    }
 
-    document.getElementById('simFolioBadge').textContent = currentTicketFolio;
-    document.getElementById('dispFolio').textContent = currentTicketFolio;
-    document.getElementById('dispLocation').textContent = location;
-    document.getElementById('dispCategory').textContent = category;
+    const btnEmitir = document.getElementById('btnEmitirTicket');
+    const btnLabel = document.getElementById('btnEmitirTicketLabel');
+    if (btnEmitir) btnEmitir.disabled = true;
+    if (btnLabel) btnLabel.textContent = 'Guardando en Servidor...';
 
-    // Reset state
-    advanceTicketState('ABIERTO');
-    showToast('Ticket Generado', `Folio ${currentTicketFolio} registrado en base de datos.`, 'success');
+    try {
+        const response = await fetch(`${API_BASE_URL}/tickets`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                ubicacion: location,
+                categoria: category,
+                severidad: severity,
+                descripcion: desc
+            })
+        });
+
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Error al guardar en el servidor');
+
+        // Folio real devuelto por la base de datos
+        currentTicketFolio = data.ticket.folio;
+
+        document.getElementById('simFolioBadge').textContent = currentTicketFolio;
+        document.getElementById('dispFolio').textContent = currentTicketFolio;
+        document.getElementById('dispLocation').textContent = data.ticket.ubicacion;
+        document.getElementById('dispCategory').textContent = data.ticket.categoria;
+
+        advanceTicketState('ABIERTO');
+        showToast('Ticket Generado', `Folio ${currentTicketFolio} registrado en base de datos.`, 'success');
+        document.getElementById('simDescription').value = '';
+
+    } catch (err) {
+        showToast('Error de Conexión', err.message, 'error');
+    } finally {
+        if (btnEmitir) btnEmitir.disabled = false;
+        if (btnLabel) btnLabel.textContent = 'Generar Ticket Oficial con Folio UTP';
+    }
 }
+
+// Vinculación por EventListener al botón del simulador
+document.getElementById('btnEmitirTicket')?.addEventListener('click', handleEmitTicket);
 
 function advanceTicketState(newState) {
     currentTicketState = newState;
@@ -169,6 +223,9 @@ function showToast(title, message, type = 'info') {
     if (type === 'success') {
         toastIcon.className = 'w-7 h-7 rounded-lg bg-utp-green-600 text-white flex items-center justify-center font-bold';
         toastIcon.textContent = '✓';
+    } else if (type === 'error') {
+        toastIcon.className = 'w-7 h-7 rounded-lg bg-utp-terracotta-600 text-white flex items-center justify-center font-bold';
+        toastIcon.textContent = '✕';
     } else {
         toastIcon.className = 'w-7 h-7 rounded-lg bg-utp-terracotta-600 text-white flex items-center justify-center font-bold';
         toastIcon.textContent = 'ℹ';
@@ -183,6 +240,135 @@ function showToast(title, message, type = 'info') {
     }, 3500);
 }
 
+// ==========================================
+// 6. CONTROL DEL MODAL DE ACCESO (LOGIN / REGISTRO)
+// ==========================================
+const authModal = document.getElementById('authModal');
+const loginView = document.getElementById('loginView');
+const registerView = document.getElementById('registerView');
+const profileView = document.getElementById('profileView');
+
+function openAuthModal() {
+    if (!authModal) return;
+    const user = JSON.parse(localStorage.getItem('cc_user') || 'null');
+    authModal.classList.remove('hidden');
+
+    if (user) {
+        if (loginView) loginView.classList.add('hidden');
+        if (registerView) registerView.classList.add('hidden');
+        if (profileView) profileView.classList.remove('hidden');
+        document.getElementById('profileName').textContent = user.nombre;
+        document.getElementById('profileEmail').textContent = user.email;
+        document.getElementById('profileAvatarLetter').textContent = user.nombre.charAt(0).toUpperCase();
+    } else {
+        if (profileView) profileView.classList.add('hidden');
+        if (registerView) registerView.classList.add('hidden');
+        if (loginView) loginView.classList.remove('hidden');
+    }
+}
+
+function updateNavAuthUI() {
+    const user = JSON.parse(localStorage.getItem('cc_user') || 'null');
+    const label = document.getElementById('navAuthLabel');
+    if (label) {
+        label.textContent = user ? `Perfil (${user.nombre.split(' ')[0]})` : 'Iniciar Sesión';
+    }
+}
+
+document.getElementById('navAuthBtn')?.addEventListener('click', openAuthModal);
+document.getElementById('mobileAuthBtn')?.addEventListener('click', () => {
+    mobileMenu?.classList.add('hidden');
+    openAuthModal();
+});
+
+document.getElementById('closeAuthModal')?.addEventListener('click', () => {
+    authModal?.classList.add('hidden');
+});
+
+document.getElementById('toggleToRegister')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    loginView?.classList.add('hidden');
+    registerView?.classList.remove('hidden');
+});
+
+document.getElementById('toggleToLogin')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    registerView?.classList.add('hidden');
+    loginView?.classList.remove('hidden');
+});
+
+// Evento: Registro de nuevo usuario
+document.getElementById('btnDoRegister')?.addEventListener('click', async () => {
+    const nombre = document.getElementById('regName').value.trim();
+    const email = document.getElementById('regEmail').value.trim();
+    const password = document.getElementById('regPass').value;
+
+    if (!nombre || !email || !password) {
+        showToast('Campos Incompletos', 'Completa todos los campos para el registro.', 'error');
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API_BASE_URL}/auth/register`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nombre, email, password })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Error en el registro');
+
+        showToast('Registro Exitoso', 'Tu usuario fue creado. Inicia sesión ahora.', 'success');
+        document.getElementById('toggleToLogin').click();
+    } catch (err) {
+        showToast('Fallo de Registro', err.message, 'error');
+    }
+});
+
+// Evento: Login
+document.getElementById('btnDoLogin')?.addEventListener('click', async () => {
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPass').value;
+
+    if (!email || !password) {
+        showToast('Credenciales Faltantes', 'Ingresa tu correo y contraseña.', 'error');
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API_BASE_URL}/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Credenciales inválidas');
+
+        localStorage.setItem('cc_token', data.token);
+        localStorage.setItem('cc_user', JSON.stringify(data.user));
+
+        authModal.classList.add('hidden');
+        updateNavAuthUI();
+        showToast('Sesión Iniciada', `Bienvenido, ${data.user.nombre}.`, 'success');
+    } catch (err) {
+        showToast('Error de Acceso', err.message, 'error');
+    }
+});
+
+// Evento: Logout
+document.getElementById('btnLogout')?.addEventListener('click', () => {
+    localStorage.removeItem('cc_token');
+    localStorage.removeItem('cc_user');
+    authModal.classList.add('hidden');
+    updateNavAuthUI();
+    showToast('Sesión Cerrada', 'Has cerrado sesión exitosamente.', 'info');
+});
+
+// Inicializar el estado de sesión al cargar
+updateNavAuthUI();
+
+// ==========================================
+// 7. REGISTRO DE SERVICE WORKER (PWA)
+// ==========================================
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker
