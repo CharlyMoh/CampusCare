@@ -1,7 +1,6 @@
 // ==========================================
 // CONFIGURACIÓN API REST (Render / Neon)
 // ==========================================
-// Sustituye con tu URL pública de Render (ej. https://campuscare-api.onrender.com/api)
 const API_BASE_URL = "https://campuscare-api-hnju.onrender.com/api";
 
 // 1. Mobile Menu Toggle

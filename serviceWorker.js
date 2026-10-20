@@ -1,38 +1,19 @@
-const CACHE_NAME = 'campuscare-cache-v3';
+const CACHE_NAME = 'campuscare-cache-v4';
 
-const ASSETS_TO_CACHE = [
-    './',
+const APP_SHELL_ASSETS = [
     './index.html',
     './styles.css',
     './app.js',
     './manifest.json',
-    './images/icon.png',
     './images/icon-192.png',
     './images/icon-512.png',
     './images/icon-maskable-512.png',
-    './images/apple-touch-icon.png',
-    './images/butacas.jpg',
-    './images/fluxometro.jpg',
-    './images/proyector.jpg',
-    './images/SwitchPoe.jpg',
-    './images/tablero.jpg',
-    './images/tableroDescompuesto.jpg'
+    './images/apple-touch-icon.png'
 ];
 
 async function precacheAssets() {
     const cache = await caches.open(CACHE_NAME);
-    await Promise.all(
-        ASSETS_TO_CACHE.map(async (url) => {
-            try {
-                const response = await fetch(url, { cache: 'reload' });
-                if (response.ok) {
-                    await cache.put(url, response);
-                }
-            } catch (error) {
-                console.warn('[CampusCare SW] No se pudo precachear:', url, error);
-            }
-        })
-    );
+    await cache.addAll(APP_SHELL_ASSETS);
 }
 
 self.addEventListener('install', (event) => {
